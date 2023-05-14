@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:example/pages/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -17,7 +18,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Future<void> _login({required String username, required String password}) async {
+  Future<void> _login({
+    required String username,
+    required String password,
+    required BuildContext context}) async {
     /*final url = Uri.parse('http://3.34.2.208:5000/api/authenticate');
     final response = await http.post(
       url,
@@ -46,8 +50,16 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if(response.statusCode == 200) {
-      print('Login successful!');
-      print(response.data);
+      final accessToken = response.data['accessToken'];
+      final refreshToken = response.data['refreshToken'];
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => WelcomePage(
+                accessToken: accessToken, refreshToken: refreshToken
+            ))
+      );
 
     } else {
       print('Login failed!');
@@ -119,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       final username = usernameController.text.toString();
                       final password = passwordController.text.toString();
-                      _login(username: username, password: password);
+                      _login(username: username, password: password, context: context);
                     },
                     child: const Text(
                       'Login',
