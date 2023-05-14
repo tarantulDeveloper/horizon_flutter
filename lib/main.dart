@@ -8,19 +8,19 @@ void main() {
     print('Caught error: ${details.exception}');
     print('Stack trace:\n${details.stack}');
   };
-  runApp(const HorizonApp());
+  runApp(HorizonApp());
 }
 
 class HorizonApp extends StatelessWidget {
-  const HorizonApp({Key? key}) : super(key: key);
+  // const HorizonApp({Key? key}) : super(key: key);
+  final BaseApi baseApi = BaseApi();
+
+  HorizonApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<BaseApi>(
-            create: (_) => BaseApi(), dispose: (_, api) => api.dio.close())
-      ],
+    return ChangeNotifierProvider(
+      create: (context) => baseApi,
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: "My Horizon App",

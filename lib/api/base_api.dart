@@ -72,6 +72,7 @@ class BaseApi extends ChangeNotifier{
         options: Options(method: requestOptions.method, headers: requestOptions.headers));
         return response;
       } on DioError catch (error) {
+        print(error.response?.data);
         if(error.response?.statusCode == 401) {
           if(await _storage.containsKey(key: 'refreshToken')) {
             await refreshToken();
