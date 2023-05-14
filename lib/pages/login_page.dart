@@ -18,10 +18,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Future<void> _login({
-    required String username,
-    required String password,
-    required BuildContext context}) async {
+  Future<void> _login(
+      {required String username,
+      required String password,
+      required NavigatorState navigator}) async {
     /*final url = Uri.parse('http://3.34.2.208:5000/api/authenticate');
     final response = await http.post(
       url,
@@ -41,31 +41,19 @@ class _LoginPageState extends State<LoginPage> {
 
     final baseApi = Provider.of<BaseApi>(context, listen: false);
     final url = Uri.parse('${baseApi.getBaseUrl()}/authenticate');
-    final response = await baseApi.dio.post(
-      url.toString(),
-      data: {
-        'username':username,
-        'password':password
-      }
-    );
+    final response = await baseApi.dio.post(url.toString(),
+        data: {'username': username, 'password': password});
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       final accessToken = response.data['accessToken'];
       final refreshToken = response.data['refreshToken'];
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => WelcomePage(
-                accessToken: accessToken, refreshToken: refreshToken
-            ))
-      );
-
+      navigator.pushReplacement(MaterialPageRoute(
+          builder: (context) => WelcomePage(
+              accessToken: accessToken, refreshToken: refreshToken)));
     } else {
       print('Login failed!');
     }
-
-
   }
 
   @override
@@ -131,7 +119,10 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       final username = usernameController.text.toString();
                       final password = passwordController.text.toString();
-                      _login(username: username, password: password, context: context);
+                      _login(
+                          username: username,
+                          password: password,
+                          navigator: Navigator.of(context));
                     },
                     child: const Text(
                       'Login',
