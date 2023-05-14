@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key, required this.accessToken, required this.refreshToken}) : super(key: key);
+  const WelcomePage(
+      {Key? key, required this.accessToken, required this.refreshToken})
+      : super(key: key);
   final String accessToken;
   final String refreshToken;
 

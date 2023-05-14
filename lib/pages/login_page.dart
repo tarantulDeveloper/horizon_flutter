@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:example/pages/welcome_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../api/base_api.dart';
@@ -22,23 +19,6 @@ class _LoginPageState extends State<LoginPage> {
       {required String username,
       required String password,
       required NavigatorState navigator}) async {
-    /*final url = Uri.parse('http://3.34.2.208:5000/api/authenticate');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type':'application/json'},
-      body: jsonEncode({
-        'username': username,
-        'password': password
-      })
-    );
-
-    if(response.statusCode == 200) {
-      print('Login successful!');
-      print(jsonDecode(response.body.toString()));
-    } else {
-      print('Login failed! Error: ${response.body}');
-    }*/
-
     final baseApi = Provider.of<BaseApi>(context, listen: false);
     final url = Uri.parse('${baseApi.getBaseUrl()}/authenticate');
     final response = await baseApi.dio.post(url.toString(),
